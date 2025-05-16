@@ -1,11 +1,10 @@
 import cloudinary
-from decouple import config
-import cloudinary.uploader
 from cloudinary.utils import cloudinary_url
-
-CLOUDINARY_CLOUD_NAME=config("CLOUDINARY_CLOUD_NAME",default="")
-CLOUDINARY_SECRET_API_KEY=config("CLOUDINARY_SECRET_API_KEY")
-CLOUDINARY_PUBLIC_API_KEY=config("CLOUDINARY_PUBLIC_API_KEY",default="247881657369529")
+from django.conf import settings
+from decouple import config
+CLOUDINARY_CLOUD_NAME=settings.CLOUDINARY_CLOUD_NAME
+CLOUDINARY_SECRET_API_KEY=settings.CLOUDINARY_SECRET_API_KEY
+CLOUDINARY_PUBLIC_API_KEY=settings.CLOUDINARY_PUBLIC_API_KEY
 # Configuration       
 def cloudinary_init():
     cloudinary.config( 
