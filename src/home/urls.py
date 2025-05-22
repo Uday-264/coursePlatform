@@ -18,11 +18,21 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
-
+from . import views
+from emails.views import verify_email_token_view,email_token_login_view,logout_button_hx_view
 urlpatterns = [
+    path("",views.home),
+    path("login/",views.login_logout_template_view),
+    path("logout/",views.login_logout_template_view),
     path('admin/', admin.site.urls),
     path('courses/',include("courses.urls")),
+    path('verify/<uuid:token>/',verify_email_token_view),
+    path('hx/login/',email_token_login_view),
+    path('hx/logout/',logout_button_hx_view),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += [
+        path("__reload__/", include("django_browser_reload.urls")),
+    ]

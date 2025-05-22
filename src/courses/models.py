@@ -82,6 +82,16 @@ class Course(models.Model):
     def get_absolute_url(self):
         return self.path
     
+    def get_thumbnail(self):
+        if not self.image:
+            return None
+        return helpers.get_cloudinary_image_object(self,field_name='image',as_html=False,width=382)
+   
+    def get_display_image(self):
+        if not self.image:
+            return None
+        return helpers.get_cloudinary_image_object(self,field_name='image',as_html=False,width=750)
+
 
     def get_display_name(self):
         return f"{self.title}-Course"
@@ -134,6 +144,25 @@ class Lesson(models.Model):
             course_path=course_path[:-1]
         return f"{course_path}/lessons/{self.public_id}"
 
+    @property
+    def requires_email(self):
+        return self.course.access==AccessRequirement.EMAIL_REQUIRED
+
     def get_display_name(self):
         return f"{self.title}-{self.course.get_display_name()}"
+    def get_absolute_url(self):
+        return self.path
+    @property
+    def is_comming_soon(self):
+        return self.status==publicStatus.COMMING_SOON
     
+    @property
+    def has_video(self):
+        return self.video is not None
+    
+    def get_thumbnail(self):
+        if not self.thumbnail:
+            return helpers.get_cloudinary_image_object(self,field_name='thumbnail',as_html=False,width=382)
+        elif self.video:
+            return helpers.get_cloudinary_image_object(self,field_name='video',format='jpg',as_html=False,width=382)
+        return None

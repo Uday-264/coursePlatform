@@ -1,7 +1,7 @@
 
 from django.template.loader import get_template
 from django.conf import settings
-def get_cloudinary_image_object(instance,field_name='image',as_html=False,width=1200):
+def get_cloudinary_image_object(instance,field_name='image',as_html=False,format=None,width=1200):
     
     if not hasattr(instance,field_name):
           return ""
@@ -11,6 +11,8 @@ def get_cloudinary_image_object(instance,field_name='image',as_html=False,width=
     image_options={
             "width":width
         }
+    if not format is None:
+          image_options['format']=format
     if as_html:
           return image_object.image(**image_options)
     url=image_object.build_url(**image_options)
